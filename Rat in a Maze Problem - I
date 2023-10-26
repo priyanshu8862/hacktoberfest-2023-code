@@ -1,0 +1,62 @@
+Consider a rat placed at (0, 0) in a square matrix of order N * N. It has to reach the destination at (N - 1, N - 1). Find all possible paths that the rat can take to reach from source to destination. The directions in which the rat can move are 'U'(up), 'D'(down), 'L' (left), 'R' (right). Value 0 at a cell in the matrix represents that it is blocked and rat cannot move to it while value 1 at a cell in the matrix represents that rat can be travel through it.
+Note: In a path, no cell can be visited more than one time. If the source cell is 0, the rat cannot move to any other cell.
+
+Example 1:
+
+Input:
+N = 4
+m[][] = {{1, 0, 0, 0},
+         {1, 1, 0, 1}, 
+         {1, 1, 0, 0},
+         {0, 1, 1, 1}}
+Output:
+DDRDRR DRDDRR
+Explanation:
+The rat can reach the destination at 
+(3, 3) from (0, 0) by two paths - DRDDRR 
+and DDRDRR, when printed in sorted order 
+we get DDRDRR DRDDRR.
+
+
+
+def findPaths(N, m):
+    def isSafe(x, y, visited):
+        return x >= 0 and y >= 0 and x < N and y < N and m[x][y] == 1 and not visited[x][y]
+
+    def findPathsUtil(x, y, path, visited):
+        if x == N - 1 and y == N - 1:
+            result.append(path)
+            return
+
+        dx = [1, -1, 0, 0]
+        dy = [0, 0, 1, -1]
+        directions = ['D', 'U', 'R', 'L']
+
+        for i in range(4):
+            newX, newY = x + dx[i], y + dy[i]
+            if isSafe(newX, newY, visited):
+                visited[newX][newY] = True
+                findPathsUtil(newX, newY, path + directions[i], visited)
+                visited[newX][newY] = False
+
+    visited = [[False for _ in range(N)] for _ in range(N)]
+    result = []
+    
+    if m[0][0] == 1 and m[N - 1][N - 1] == 1:
+        visited[0][0] = True
+        findPathsUtil(0, 0, '', visited)
+
+    return sorted(result)
+
+# Example usage
+N = 4
+m = [
+    [1, 0, 0, 0],
+    [1, 1, 0, 1],
+    [1, 1, 0, 0],
+    [0, 1, 1, 1]
+]
+
+paths = findPaths(N, m)
+for path in paths:
+    print(path, end=" ")
