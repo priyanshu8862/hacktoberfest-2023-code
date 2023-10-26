@@ -1,0 +1,63 @@
+You are given N elements and your task is to Implement a Stack in which you can get a minimum element in O(1) time.
+
+Example 1:
+
+Input:
+push(2)
+push(3)
+pop()
+getMin()
+push(1)
+getMin()
+Output: 2 1
+Explanation: In the first test case for
+query 
+push(2)  Insert 2 into the stack.
+         The stack will be {2}
+push(3)  Insert 3 into the stack.
+         The stack will be {2 3}
+pop()    Remove top element from stack 
+         Poped element will be 3 the
+         stack will be {2}
+getMin() Return the minimum element
+         min element will be 2 
+push(1)  Insert 1 into the stack.
+         The stack will be {2 1}
+getMin() Return the minimum element
+         min element will be 1
+
+
+
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, x):
+        self.stack.append(x)
+        if not self.min_stack or x <= self.min_stack[-1]:
+            self.min_stack.append(x)
+
+    def pop(self):
+        if self.stack:
+            if self.stack[-1] == self.min_stack[-1]:
+                self.min_stack.pop()
+            self.stack.pop()
+
+    def top(self):
+        if self.stack:
+            return self.stack[-1]
+
+    def getMin(self):
+        if self.min_stack:
+            return self.min_stack[-1]
+
+# Example usage
+stack = MinStack()
+stack.push(2)
+stack.push(3)
+stack.pop()
+print(stack.getMin())  # Output: 2
+stack.push(1)
+print(stack.getMin())  # Output: 1
